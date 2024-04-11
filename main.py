@@ -6,7 +6,10 @@ from typing import List
 
 app = FastAPI()
 
-origins = ["http://localhost:3000"]
+origins = [
+    "http://localhost:3000",
+    "https://interpolation-ui.onrender.com"
+]
 
 app.add_middleware(
     CORSMiddleware,
