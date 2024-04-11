@@ -65,8 +65,6 @@ export const Charts: FC<ChartsProps> = ({ onReset, data }) => {
                 max = e.y;
               }
             });
-            console.log('min', min);
-            console.log('max', max);
             return (<Grid
               key={el.name}
               item xs={6}
