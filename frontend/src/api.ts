@@ -3,7 +3,7 @@ import { ChartData, ChartDataRequest } from "./types.ts";
 
 class RestAPI {
   private client = axios.create({
-    baseURL: "http://localhost:8000/",
+    baseURL: "https://interpolation-ct01.onrender.com",
     paramsSerializer: {
       indexes: null
     }

@@ -12,7 +12,8 @@ interface ChartsProps {
   data: ChartData[];
 }
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = (props) => {
+  const { active, payload } = props;
   if (active && payload && payload.length) {
     console.log(payload)
     return (
