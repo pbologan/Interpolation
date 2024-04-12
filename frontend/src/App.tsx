@@ -4,6 +4,8 @@ import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
 import { ChartData } from "./types.ts";
 import { Charts } from "./widgets/Charts/Charts.tsx";
@@ -14,6 +16,7 @@ import { AxiosError } from "axios";
 export default function App() {
   const [data, setData] = useState<ChartData[] | null>(null);
   const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onInterpolate = (xValues: number[], yValues: number[], stepValue: number, precision: number) => {
     if (xValues.length !== yValues.length) {
@@ -24,6 +27,7 @@ export default function App() {
       return;
     }
 
+    setLoading(true);
     restApi.getChartData({
       x_values: xValues,
       y_values: yValues,
@@ -31,11 +35,13 @@ export default function App() {
       precision,
     }).then(response => {
       setData(response);
+      setLoading(false);
     }).catch((error: AxiosError) => {
       setError({
         name: error.name,
         message: error.message
       });
+      setLoading(false);
     });
   };
 
@@ -56,7 +62,7 @@ export default function App() {
       }}>
         {(data !== null && data.length > 0)
           ? <Charts onReset={() => setData(null)} data={data} />
-          : <Inputs onInterpolate={onInterpolate} onError={onInputError} />
+          : <Inputs onInterpolate={onInterpolate} onError={onInputError} loading={loading} />
         }
       </Box>
       <Modal sx={{ display: "flex", justifyContent: "center", alignItems: "center"}} open={error !== null}>
@@ -78,6 +84,15 @@ export default function App() {
           <Button sx={{ mt:1 }} size="small" variant="contained" onClick={() => setError(null)}>Close</Button>
         </Paper>
       </Modal>
+      <Backdrop
+        sx={{
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          zIndex: (theme) => theme.zIndex.drawer + 1
+        }}
+        open={loading}
+      >
+        <CircularProgress size={80} />
+      </Backdrop>
     </Container>
   );
 }

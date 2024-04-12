@@ -1,16 +1,17 @@
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { FC, useState } from "react";
 import { isError, parseStringToNumber, parseStringToNumberArray } from "../../utils.ts";
-import Box from "@mui/material/Box";
 
 interface InputsProps {
   onInterpolate: (xValues: number[], yValues: number[], step: number, precision: number) => void;
   onError: (error: Error) => void;
+  loading: boolean;
 }
 
-export const Inputs: FC<InputsProps> = ({ onInterpolate, onError }) => {
+export const Inputs: FC<InputsProps> = ({ onInterpolate, onError, loading }) => {
   const [xInput, setXInput] = useState<string>("");
   const [yInput, setYInput] = useState<string>("");
   const [step, setStep] = useState<string>("")
@@ -46,6 +47,7 @@ export const Inputs: FC<InputsProps> = ({ onInterpolate, onError }) => {
       m:2,
     }}>
       <TextField
+        disabled={loading}
         required
         value={xInput}
         onChange={(e) => setXInput(e.target.value)}
@@ -55,6 +57,7 @@ export const Inputs: FC<InputsProps> = ({ onInterpolate, onError }) => {
         label="X VALUES"
       />
       <TextField
+        disabled={loading}
         required
         value={yInput}
         onChange={(e) => setYInput(e.target.value)}
@@ -68,6 +71,7 @@ export const Inputs: FC<InputsProps> = ({ onInterpolate, onError }) => {
         flexDirection: "row"
       }}>
         <TextField
+          disabled={loading}
           required
           value={step}
           onChange={(e) => setStep(e.target.value)}
@@ -77,6 +81,7 @@ export const Inputs: FC<InputsProps> = ({ onInterpolate, onError }) => {
           label="Step"
         />
         <TextField
+          disabled={loading}
           type="number"
           required
           value={precision}
@@ -88,6 +93,7 @@ export const Inputs: FC<InputsProps> = ({ onInterpolate, onError }) => {
         />
       </Box>
       <Button
+        disabled={loading}
         sx={{ mt:1 }}
         variant="contained"
         onClick={onInterpolateClick}
